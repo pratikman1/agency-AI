@@ -1,36 +1,15 @@
 import React from "react";
 import Title from "./Title";
 import assets from "../assets/assets";
-import toast from "react-hot-toast";
+import { motion } from "motion/react";
 
-const ContactUs = () => {
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-
-    formData.append("access_key", "ab693ee2-15ab-4f3a-a9d3-97881ae5578a");
-
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        toast.success("Thank you for submission");
-        e.target.reset();
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
-
+const Contact = () => {
   return (
-    <div
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      transition={{ staggerChildren: 0.2 }}
       id="contact-us"
       className="flex flex-col items-center gap-7 px-4 sm:px-12 lg:px-24 xl:px-40 pt-30 text-gray-700 dark:text-white">
       <Title
@@ -38,8 +17,11 @@ const ContactUs = () => {
         description="From strategy to execution, we craft digital solutions that move your business forward."
       />
 
-      <form
-        onSubmit={onSubmit}
+      <motion.form
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        viewport={{ once: true }}
         className="grid grid-cols-2 gap-3 sm:gap-5 max-w-2xl w-full">
         <div>
           <p className="font-medium mb-2 text-sm">Your name</p>
@@ -86,9 +68,9 @@ const ContactUs = () => {
           Submit
           <img src={assets.arrow_icon} alt="" className="w-4" />
         </button>
-      </form>
-    </div>
+      </motion.form>
+    </motion.div>
   );
 };
 
-export default ContactUs;
+export default Contact;
